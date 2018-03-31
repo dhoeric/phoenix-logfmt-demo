@@ -24,7 +24,8 @@ defmodule HelloWeb.LoggerPlug do
           elapsed: formatted_diff(diff),
           method: conn.method,
           path: conn.request_path,
-          status: conn.status
+          status: conn.status,
+          remote_ip: formatted_ip(conn.remote_ip)
         ]
       end
 
@@ -34,4 +35,8 @@ defmodule HelloWeb.LoggerPlug do
 
   defp formatted_diff(diff) when diff > 1000, do: [diff |> div(1000) |> Integer.to_string(), "ms"] |> Enum.join(" ")
   defp formatted_diff(diff), do: [Integer.to_string(diff), "µs"] |> Enum.join(" ")
+
+  defp formatted_ip(ip) do
+    to_string(:inet_parse.ntoa(ip))
+  end
 end
